@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author Rahul Bir
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -106,6 +106,42 @@ public class Model extends Observable {
      *    value, then the leading two tiles in the direction of motion merge,
      *    and the trailing tile does not.
      * */
+
+    private int getTopMostEmptyRow(int col, int row) {
+        int topMostEmptyRow = row;
+        for (int i = row + 1; i < board.size(); i++) {
+            if (board.tile(col, i) != null) break;
+            row++;
+        }
+        return topMostEmptyRow;
+    }
+    private boolean processColumn(int col) {
+        int boardSize = board.size();
+        Tile currentTile;
+        boolean prevRowMerged = false;
+        boolean changed = false;
+        for (int row = boardSize - 2; row >= 0; row--) {
+            currentTile = board.tile(row, col);
+            if (currentTile == null) continue;
+            int topMostEmptyRow = getTopMostEmptyRow(col, row);
+
+            if (!prevRowMerged && topMostEmptyRow + 1 < boardSize && board.tile(col, topMostEmptyRow + 1).value() == currentTile.value()) {
+                board.move(col, topMostEmptyRow + 1, currentTile);
+                prevRowMerged = true;
+                changed = true;
+                continue;
+            }
+
+            if (topMostEmptyRow != row) {
+                board.move(col, topMostEmptyRow, currentTile);
+                changed = true;
+            }
+
+            prevRowMerged = false;
+        }
+        return changed;
+    }
+
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
