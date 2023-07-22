@@ -111,7 +111,7 @@ public class Model extends Observable {
         int topMostEmptyRow = row;
         for (int i = row + 1; i < board.size(); i++) {
             if (board.tile(col, i) != null) break;
-            row++;
+            topMostEmptyRow++;
         }
         return topMostEmptyRow;
     }
@@ -121,14 +121,15 @@ public class Model extends Observable {
         boolean prevRowMerged = false;
         boolean changed = false;
         for (int row = boardSize - 2; row >= 0; row--) {
-            currentTile = board.tile(row, col);
+            currentTile = board.tile(col, row);
             if (currentTile == null) continue;
             int topMostEmptyRow = getTopMostEmptyRow(col, row);
 
-            if (!prevRowMerged && topMostEmptyRow + 1 < boardSize && board.tile(col, topMostEmptyRow + 1).value() == currentTile.value()) {
+            if (!prevRowMerged && topMostEmptyRow + 1 < boardSize && board.tile(col, topMostEmptyRow + 1) != null && board.tile(col, topMostEmptyRow + 1).value() == currentTile.value()) {
                 board.move(col, topMostEmptyRow + 1, currentTile);
                 prevRowMerged = true;
                 changed = true;
+                score += board.tile(col, topMostEmptyRow + 1).value();
                 continue;
             }
 
@@ -149,6 +150,10 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+
+        for (int col = 0; col < board.size(); col++) {
+            if (processColumn(col)) changed = true;
+        }
 
         checkGameOver();
         if (changed) {
