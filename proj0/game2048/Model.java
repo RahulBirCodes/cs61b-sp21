@@ -175,6 +175,22 @@ public class Model extends Observable {
     public static boolean atLeastOneMoveExists(Board b) {
         if (emptySpaceExists(b)) return true;
 
+        // you only need to check bottom and right tile for similar values
+        int boardSize = b.size();
+        Tile selectedTile;
+        Tile bottomTile;
+        Tile rightTile;
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col++) {
+                selectedTile = b.tile(col, row);
+                bottomTile = (row + 1) < boardSize ? b.tile(col, row + 1) : null;
+                rightTile = (col + 1) < boardSize ? b.tile(col + 1, row) : null;
+
+                if (rightTile != null && rightTile.value() == selectedTile.value()) return true;
+                if (bottomTile != null && bottomTile.value() == selectedTile.value()) return true;
+            }
+        }
+        return false;
     }
 
 
