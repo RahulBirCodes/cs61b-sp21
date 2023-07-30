@@ -83,7 +83,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     public T get(int index) {
         ListNode l = sentinel.next;
         int currentInd = 0;
-        while (currentInd != index) {
+        while (currentInd != index && l != sentinel) {
             l = l.next;
             currentInd++;
         }
@@ -91,6 +91,9 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     private T getRecursive(ListNode node, int index) {
+        if (node == sentinel) {
+            return null;
+        }
         if (index == 0) {
             return node.value;
         }
