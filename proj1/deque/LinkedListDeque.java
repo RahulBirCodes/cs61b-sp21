@@ -68,6 +68,9 @@ public class LinkedListDeque<T> implements Deque<T> {
         T removedVal = sentinel.next.value;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
+        if (removedVal != null) {
+            size--;
+        }
         return removedVal;
     }
 
@@ -76,6 +79,9 @@ public class LinkedListDeque<T> implements Deque<T> {
         T removedVal = sentinel.prev.value;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
+        if (removedVal != null) {
+            size--;
+        }
         return removedVal;
     }
 
