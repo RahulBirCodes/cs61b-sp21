@@ -13,25 +13,45 @@ public class ArrayDeque<T> implements Deque<T> {
         nextLast = 5;
     }
 
+    private int getPreviousIndexCircular(int index) {
+        if (index == 0) {
+            return items.length - 1;
+        } else {
+            return --index;
+        }
+    }
+
+    private int getNextIndexCircular(int index) {
+        return (index + 1) % items.length;
+    }
+
+    public void resize(int capacity) {
+        T[] resizedItems = (T[]) new Object[capacity];
+        int firstSourceArrItemIndex = getNextIndexCircular(nextFirst);
+        int lastSourceArrItemIndex = getPreviousIndexCircular(nextLast);
+        if (lastSourceArrItemIndex < firstSourceArrItemIndex) {
+            int firstHalfNumberOfITC = items.length - firstSourceArrItemIndex;
+            System.arraycopy(items, firstSourceArrItemIndex, resizedItems, 0, firstHalfNumberOfITC);
+            System.arraycopy(items, 0, resizedItems, firstHalfNumberOfITC, size - firstHalfNumberOfITC);
+        } else {
+            System.arraycopy(items, firstSourceArrItemIndex, resizedItems, 0, size);
+        }
+        items = resizedItems;
+        nextFirst = items.length - 1;
+        nextLast = size;
+    }
+
     @Override
     public void addFirst(T item) {
         items[nextFirst] = item;
-        if (nextFirst == 0) {
-            nextFirst = items.length - 1;
-        } else {
-            nextFirst--;
-        }
+        nextFirst = getPreviousIndexCircular(nextFirst);
         size++;
     }
 
     @Override
     public void addLast(T item) {
         items[nextLast] = item;
-        if (nextLast == items.length - 1) {
-            nextLast = 0;
-        } else {
-            nextLast++;
-        }
+        nextLast = getNextIndexCircular(nextLast);
         size++;
     }
 
@@ -50,7 +70,7 @@ public class ArrayDeque<T> implements Deque<T> {
         if (size <= 0) {
             return null;
         }
-        nextFirst = (nextFirst + 1) % items.length;
+        nextFirst = getNextIndexCircular(nextFirst);
         size--;
         return items[nextFirst];
     }
@@ -60,12 +80,7 @@ public class ArrayDeque<T> implements Deque<T> {
         if (size <= 0) {
             return null;
         }
-
-        if (nextLast == 0) {
-            nextLast = items.length - 1;
-        } else {
-            nextLast--;
-        }
+        nextLast = getPreviousIndexCircular(nextLast);
         size--;
         return items[nextLast];
     }

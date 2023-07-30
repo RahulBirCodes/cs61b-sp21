@@ -26,4 +26,16 @@ public class ArrayDequeTest {
         assertEquals(ad.get(7), null);
     }
 
+//    @Test
+//    public void testResize() {
+//        ArrayDeque<Integer> ad = new ArrayDeque<>();
+//        ad.addFirst(6);
+//        ad.addFirst(5);
+//        ad.addFirst(4);
+//        ad.addFirst(3);
+//        ad.addFirst(2);
+//        ad.addFirst(1);
+//
+//        ad.resize(20);
+//    }
 }
