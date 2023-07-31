@@ -43,6 +43,9 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void addFirst(T item) {
+        if (size == items.length) {
+            resize(size * 2);
+        }
         items[nextFirst] = item;
         nextFirst = getPreviousIndexCircular(nextFirst);
         size++;
@@ -50,6 +53,9 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void addLast(T item) {
+        if (size == items.length) {
+            resize(size * 2);
+        }
         items[nextLast] = item;
         nextLast = getNextIndexCircular(nextLast);
         size++;
@@ -70,6 +76,9 @@ public class ArrayDeque<T> implements Deque<T> {
         if (size <= 0) {
             return null;
         }
+        if (size < items.length / 4) {
+            resize(items.length / 4);
+        }
         nextFirst = getNextIndexCircular(nextFirst);
         size--;
         return items[nextFirst];
@@ -79,6 +88,9 @@ public class ArrayDeque<T> implements Deque<T> {
     public T removeLast() {
         if (size <= 0) {
             return null;
+        }
+        if (size < items.length / 4) {
+            resize(items.length / 4);
         }
         nextLast = getPreviousIndexCircular(nextLast);
         size--;
@@ -92,6 +104,20 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void printDeque() {
-        //TODO - add functionality to print the contents of the deque
+        int first = getNextIndexCircular(nextFirst);
+        int last = getPreviousIndexCircular(nextLast);
+        if (last < first) {
+            for (int i = first; i < items.length; i++) {
+                System.out.print(items[i] + " ");
+            }
+            for (int i = 0; i <= last; i++) {
+                System.out.print(items[i] + " ");
+            }
+        } else {
+            for (int i = first; i <= last; i++) {
+                System.out.print(items[i] + " ");
+            }
+        }
+        System.out.print("\n");
     }
 }
