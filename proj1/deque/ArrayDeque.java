@@ -25,7 +25,7 @@ public class ArrayDeque<T> implements Deque<T> {
         return (index + 1) % items.length;
     }
 
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         T[] resizedItems = (T[]) new Object[capacity];
         int firstSourceArrItemIndex = getNextIndexCircular(nextFirst);
         int lastSourceArrItemIndex = getPreviousIndexCircular(nextLast);
