@@ -2,6 +2,8 @@ package deque;
 
 import afu.org.checkerframework.checker.oigj.qual.O;
 
+import java.util.List;
+
 public class LinkedListDeque<T> implements Deque<T> {
     private class ListNode {
         public T value;
@@ -41,11 +43,6 @@ public class LinkedListDeque<T> implements Deque<T> {
         prevLastNode.next = nodeToAdd;
         sentinel.prev = nodeToAdd;
         size++;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     @Override
@@ -108,5 +105,25 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     public T getRecursive(int index) {
         return getRecursive(sentinel.next, index);
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+        Deque<T> lst = (Deque<T>) o;
+        if (this.size() != lst.size()) {
+            return false;
+        }
+        ListNode l = sentinel.next;
+        int i = 0;
+        while (l != sentinel) {
+            if (!lst.get(i).equals(l.value)) {
+                return false;
+            }
+            l = l.next;
+            i++;
+        }
+        return true;
     }
 }

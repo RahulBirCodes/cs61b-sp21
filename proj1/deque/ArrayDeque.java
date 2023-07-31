@@ -62,11 +62,6 @@ public class ArrayDeque<T> implements Deque<T> {
     }
 
     @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
     public int size() {
         return size;
     }
@@ -119,5 +114,22 @@ public class ArrayDeque<T> implements Deque<T> {
             }
         }
         System.out.print("\n");
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+        Deque<T> lst = (Deque<T>) o;
+        if (this.size() != lst.size()) {
+            return false;
+        }
+        for (int i = 0; i < this.size(); i++) {
+            // we can use this.get since it has a constant runtime unlike linked list implementation
+            if (!lst.get(i).equals(this.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
