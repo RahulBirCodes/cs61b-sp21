@@ -1,6 +1,8 @@
 package deque;
 
-public class ArrayDeque<T> implements Deque<T> {
+import java.util.Iterator;
+
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int size;
     private T[] items;
     private int nextFirst;
@@ -99,37 +101,46 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void printDeque() {
-        int first = getNextIndexCircular(nextFirst);
-        int last = getPreviousIndexCircular(nextLast);
-        if (last < first) {
-            for (int i = first; i < items.length; i++) {
-                System.out.print(items[i] + " ");
-            }
-            for (int i = 0; i <= last; i++) {
-                System.out.print(items[i] + " ");
-            }
-        } else {
-            for (int i = first; i <= last; i++) {
-                System.out.print(items[i] + " ");
-            }
+        for (int i = 0; i < size() - 1; i++) {
+            System.out.print(get(i) + " ");
         }
-        System.out.print("\n");
+        System.out.print(get(size() - 1) + "\n");
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof Deque)) {
-            return false;
-        }
-        Deque<T> lst = (Deque<T>) o;
-        if (this.size() != lst.size()) {
-            return false;
-        }
-        for (int i = 0; i < this.size(); i++) {
-            // we can use this.get since it has a constant runtime unlike linked list implementation
-            if (!lst.get(i).equals(this.get(i))) {
+        if (o instanceof Deque lst) {
+            if (this.size() != lst.size()) {
                 return false;
             }
+            for (int i = 0; i < this.size(); i++) {
+                // we can use this.get since it has a constant runtime unlike linked list implementation
+                if (!lst.get(i).equals(this.get(i))) {
+                    return false;
+                }
+            }
+            return true;
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int nextInd = 0;
+
+        @Override
+        public boolean hasNext() {
+            return nextInd < size;
+        }
+
+        @Override
+        public T next() {
+            T nextItem = get(nextInd);
+            nextInd++;
+            return nextItem;
+        }
     }
 }

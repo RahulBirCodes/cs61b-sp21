@@ -79,6 +79,37 @@ public class ArrayDequeTest {
                 }
             }
         }
+    }
 
+    @Test
+    public void largeEqualAndRemoveTest() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+        LinkedListDeque<Integer> ll = new LinkedListDeque<>();
+
+        for (int i = 0; i < 10000; i++) {
+            ad.addLast(i);
+            ll.addLast(i);
+        }
+
+        for (int i = 0; i < 1000; i++) {
+            assertEquals(ad.removeLast(), ll.removeLast());
+        }
+
+        assertTrue(ad.equals(ll));
+        assertTrue(ll.equals(ad));
+    }
+
+    @Test
+    public void testIterator() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+        for (int i = 0; i < 50; i++) {
+            ad.addLast(i);
+        }
+
+        int i = 0;
+        for (int j : ad) {
+            assertEquals((int) ad.get(i), j);
+            i++;
+        }
     }
 }

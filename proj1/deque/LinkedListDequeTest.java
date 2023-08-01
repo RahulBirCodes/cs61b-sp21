@@ -190,4 +190,16 @@ public class LinkedListDequeTest {
             }
         }
     }
+
+    @Test
+    public void iteratorTest() {
+        LinkedListDeque<Integer> ll = new LinkedListDeque<>();
+        for (int i = 0; i < 100; i++) {
+            ll.addLast(i);
+        }
+
+        for (int i : ll) {
+            System.out.println(i);
+        }
+    }
 }

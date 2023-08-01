@@ -1,8 +1,9 @@
 package deque;
 
+import java.util.Iterator;
 import java.util.List;
 
-public class LinkedListDeque<T> implements Deque<T> {
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private class ListNode {
         public T value;
         public ListNode next;
@@ -51,10 +52,11 @@ public class LinkedListDeque<T> implements Deque<T> {
     @Override
     public void printDeque() {
         ListNode l = sentinel.next;
-        while (l != sentinel) {
+        while (l.next != sentinel) {
             System.out.print(l.value + " ");
             l = l.next;
         }
+        System.out.print(l.value);
         System.out.print("\n");
     }
 
@@ -106,22 +108,42 @@ public class LinkedListDeque<T> implements Deque<T> {
     }
 
     public boolean equals(Object o) {
-        if (!(o instanceof Deque)) {
-            return false;
-        }
-        Deque<T> lst = (Deque<T>) o;
-        if (this.size() != lst.size()) {
-            return false;
-        }
-        ListNode l = sentinel.next;
-        int i = 0;
-        while (l != sentinel) {
-            if (!lst.get(i).equals(l.value)) {
+        if (o instanceof Deque lst) {
+            if (this.size() != lst.size()) {
                 return false;
             }
-            l = l.next;
-            i++;
+            ListNode l = sentinel.next;
+            int i = 0;
+            while (l != sentinel) {
+                if (!lst.get(i).equals(l.value)) {
+                    return false;
+                }
+                l = l.next;
+                i++;
+            }
+            return true;
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
+    }
+
+    private class LinkedListDequeIterator implements Iterator<T> {
+        private ListNode nextNode = sentinel.next;
+
+        @Override
+        public boolean hasNext() {
+            return nextNode != sentinel;
+        }
+
+        @Override
+        public T next() {
+            T nextItem = nextNode.value;
+            nextNode = nextNode.next;
+            return nextItem;
+        }
     }
 }
