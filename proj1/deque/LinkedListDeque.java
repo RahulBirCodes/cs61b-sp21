@@ -107,23 +107,43 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return getRecursive(sentinel.next, index);
     }
 
+//    public boolean equals(Object o) {
+//        if (o instanceof Deque lst) {
+//            if (this.size() != lst.size()) {
+//                return false;
+//            }
+//            ListNode l = sentinel.next;
+//            int i = 0;
+//            while (l != sentinel) {
+//                if (!lst.get(i).equals(l.value)) {
+//                    return false;
+//                }
+//                l = l.next;
+//                i++;
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
+
     public boolean equals(Object o) {
-        if (o instanceof Deque lst) {
-            if (this.size() != lst.size()) {
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+        Deque<T> lst = (Deque<T>) o;
+        if (this.size() != lst.size()) {
+            return false;
+        }
+        ListNode l = sentinel.next;
+        int i = 0;
+        while (l != sentinel) {
+            if (!lst.get(i).equals(l.value)) {
                 return false;
             }
-            ListNode l = sentinel.next;
-            int i = 0;
-            while (l != sentinel) {
-                if (!lst.get(i).equals(l.value)) {
-                    return false;
-                }
-                l = l.next;
-                i++;
-            }
-            return true;
+            l = l.next;
+            i++;
         }
-        return false;
+        return true;
     }
 
     @Override
