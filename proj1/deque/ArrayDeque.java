@@ -107,6 +107,21 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         System.out.print(get(size() - 1) + "\n");
     }
 
+//    public boolean equals(Object o) {
+//        if (o instanceof Deque lst) {
+//            if (this.size() != lst.size()) {
+//                return false;
+//            }
+//            for (int i = 0; i < this.size(); i++) {
+//                if (!lst.get(i).equals(this.get(i))) {
+//                    return false;
+//                }
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
+
 
     public boolean equals(Object o) {
         if (!(o instanceof Deque)) {
@@ -117,7 +132,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             return false;
         }
         for (int i = 0; i < this.size(); i++) {
-            // we can use this.get since it has a constant runtime unlike linked list implementation
             if (!lst.get(i).equals(this.get(i))) {
                 return false;
             }
