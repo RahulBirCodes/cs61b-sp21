@@ -1,13 +1,12 @@
 package deque;
 
 import java.util.Iterator;
-import java.util.List;
 
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private class ListNode {
-        public T value;
-        public ListNode next;
-        public ListNode prev;
+        private T value;
+        private ListNode next;
+        private ListNode prev;
 
         public ListNode(T value, ListNode next, ListNode prev) {
             this.value = value;
